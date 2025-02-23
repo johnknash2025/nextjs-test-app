@@ -1,9 +1,13 @@
 import Image from "next/image";
 
 export default function Home() {
+  // カスタム画像の URL 配列（今回は1枚だけ）
+  const imageUrls = ["/images/image1.jpg"];
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        {/* Next.js のデフォルトコンテンツ */}
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -47,6 +51,21 @@ export default function Home() {
           >
             Read our docs
           </a>
+        </div>
+
+        {/* カスタム画像セクション */}
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold mb-4">My Custom Image</h2>
+          {imageUrls.map((url, index) => (
+            <div key={index} className="relative w-full pb-[56.25%] rounded shadow overflow-hidden">
+              <Image
+                src={url}
+                alt={`Image ${index + 1}`}
+                fill
+                className="object-cover"
+              />
+            </div>
+          ))}
         </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
