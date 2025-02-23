@@ -1,12 +1,43 @@
+"use client";
+
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
 export default function Home() {
-  // カスタム画像の URL 配列（今回は1枚だけ）
   const imageUrls = ["/images/image1.jpg"];
+  const { data: session } = useSession();
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        {/* サインイン/サインアウトエリア */}
+        <div className="mb-8">
+          {session ? (
+            <div className="text-center">
+              <p>
+                Signed in as{" "}
+                {session.user?.email || session.user?.name || "Unknown user"}
+              </p>
+              <button
+                className="mt-2 px-4 py-2 bg-red-500 text-white rounded"
+                onClick={() => signOut()}
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <div className="text-center">
+              <p>You are not signed in</p>
+              <button
+                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                onClick={() => signIn("github")}
+              >
+                Sign in with GitHub
+              </button>
+            </div>
+          )}
+        </div>
+
         {/* Next.js のデフォルトコンテンツ */}
         <Image
           className="dark:invert"
@@ -26,7 +57,6 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
-
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
